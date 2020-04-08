@@ -82,6 +82,6 @@ class eleCBlog {
 
 let b = new eleCBlog({
   configpath: "./config.json",
-  articlelists: "./post/_lists.json",
+  articlelists: "./post/lists.json",
 });
 b.start();
