@@ -61,7 +61,11 @@ class eleCBlog {
     let mdname = decodeURI(mdpath);
     document.querySelector('.main').innerHTML = "";
     if (mdpath) {
-      fetch("./post/" + mdname + '.md').then(res=>res.text()).then(text=>{
+      fetch("./post/" + mdname + '.md', {
+      headers: {
+        'content-type': 'text/plain;charset=utf-8'
+      }
+    }).then(res=>res.text()).then(text=>{
         document.title = mdname;
         document.querySelector('.header_title').innerHTML = mdname;
         document.querySelector('.main').innerHTML = marked(text);
