@@ -1,4 +1,4 @@
-假如你已经按之前教程 [搭建了一个免费的 v2ray 服务器](https://elecv2.github.io/一分钟搭建一个免费的V2RAY服务器（ws+tls）)，但觉得速度有些慢，可以尝试使用 cloudflare 的 workers 给节点 CDN 加速一下。虽然有不少人感觉 cloudflare 的 CDN 就是一个减速器，但从个人体验来说，加速效果还是很明显的，尤其是在使用一些国外小水管服务器的时候。
+假如你已经按之前教程 [搭建了一个免费的 v2ray 服务器](https://elecv2.github.io/#一分钟搭建一个免费的V2RAY服务器（ws+tls）)，但觉得速度有些慢，可以尝试使用 cloudflare 的 workers 给节点 CDN 加速一下。虽然有不少人感觉 cloudflare 的 CDN 就是一个减速器，但从个人体验来说，加速效果还是很明显的，尤其是在使用一些国外小水管服务器的时候。
 
 ## 操作步骤
 
