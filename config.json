@@ -1,12 +1,13 @@
 {
   "blog": "eleCBlog",
   "header": {
-    "title": "eleCBlog - 一个博客",
+    "title": "elecV2 荒废园",
     "image": "./src/header.png"
   },
   "footer": {
-    "HOME": "/",
-    "ABOUT": "/#about",
+    "HOME": "./",
+    "ABOUT": "./#about",
+    "TG@elecV2": "https://t.me/eleCV2",
     "Power BY eleCBlog": "https://github.com/elecV2/eleCBlog"
   }
 }
