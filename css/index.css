@@ -5,6 +5,7 @@ html, body {
   --main-sd: #A8A8A8;
   --main-link: #0047AB;
   background: var(--main-bk);
+  font-family: 'Microsoft YaHei', -apple-system, 'Segoe UI', 'PingFang SC', Helvetica, Arial;
 }
 
 a {
