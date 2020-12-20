@@ -2,6 +2,8 @@
 
 ## 简述
 
+*此为 Nodejs 直接运行的方式，一般不推荐。建议使用 Docker*
+
 ``` sh
 git clone https://github.com/elecV2/elecV2P  // 或者手动下载解压
 cd elecV2P    // cmd 进入项目目录
@@ -36,8 +38,8 @@ yarn start    // or npm install --production && npm start
 
 如需使用其他端口，可以在 package.json 或 config.js 中进行手动修改。修改后，重启服务，即可通过新端口进行访问。
 
-** * 如在 VPS 等远程服务器中运行，请不要随意暴露 IP 地址及端口**
-** * 如果当时服务器是其他时区，cron 定时应进行相应调整**
+* **如在 VPS 等远程服务器中运行，请不要随意暴露 IP 地址及端口**
+* **如果当时服务器是其他时区，cron 定时应进行相应调整**
 
 查看运行日志：http://127.0.0.1/logs/all
 
@@ -49,6 +51,7 @@ yarn start    // or npm install --production && npm start
 
 ### 其他参考说明
 
-elecV2P 完整说明文档：https://github.com/elecV2/elecV2P-dei
+elecV2P 完整说明文档：https://github.com/elecV2/elecV2P-dei/tree/master/docs
 
 > 挖个坑，以后有时间，再写一个通过代理端口 + 脚本实现自动获取 cookie 的教程。
+> cookie 获取教程已完成：[elecV2P 进阶使用之抓包及 COOKIE 获取](https://elecv2.github.io/#elecV2P%20%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E4%B9%8B%E6%8A%93%E5%8C%85%E5%8F%8A%20COOKIE%20%E8%8E%B7%E5%8F%96)
