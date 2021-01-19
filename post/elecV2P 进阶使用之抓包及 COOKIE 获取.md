@@ -136,7 +136,7 @@ $HOLD 界面
 
 设置完成，接着按照脚本里的提示，打开浏览器登录 https://bean.m.jd.com 。如果前面的设置都没有问题（elecV2P 正常运行，安装信任了根证书，添加了 MITM host，**api.m.jd.com** 正常代理到了 ANYPROXY 端口，正确设置了 REWRITE 规则，JS 文件可下载或已在本地），那么应该会马上收到 cookie 获取成功的提示。类似于：
 
-![](https://elecv2.github.io/src/rrtv.png)
+![](https://elecv2.github.io/src/jdcookie.png)
 
 如果设置了其他通知方式，也会收到通知提醒。关于通知的设置，参考：[说明文档 07-feed&notify](https://github.com/elecV2/elecV2P-dei/tree/master/docs/07-feed&notify.md) 。如果出现错误，对照 elecV2P 的运行日志，以及上面的所有步骤，重新检查一遍。
 
