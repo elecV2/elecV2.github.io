@@ -1,23 +1,25 @@
 ## 什么是抓包
 
-抓包（packet capture）就是将网络传输发送与接收的数据包进行截获、重发、编辑、转存等操作，也用来检查网络安全。 抓包也经常被用来进行数据截取等。  -- 摘自某百科
+抓包（packet capture）就是将网络传输发送与接收的数据包进行截获、重发、编辑、转存等操作，也用来检查网络安全。  -- 摘自某百科
 
 ## 抓包工具
 
 桌面端比较著名的有 Fiddler/Charles/Wireshark 等等，移动端有 Thor/Stream/HttpCanary/Surge 等等，还有众多优秀的抓包软件就不一一列举了。所有的抓包工具本质上就是一个代理，功能就是把所有通过这个代理的网络请求显示出来，甚至进行进一步的修改操作。好的抓包工具显示的信息更直观一些，操作起来更顺手。
-不管抓包工具是运行在 PC 上还是手机上，还是在路由器、VPS 上，其他的设备都可以通过它提供的端口进行数据传送，所以理论上每个抓包工具都可以对任意平台的流量进行抓包处理。今天要介绍的抓包工具就是：**[elecV2P](https://github.com/elecV2/elecV2P)**，这款工具可能没有前面所提到的那些那么优秀，甚至可能还有比较多的缺点，但还是有些可圈可点的地方：这是一款基于 Nodejs 的网络工具，能装 Nodejs 就能跑，同时提供 Docker 版本，能装 Docker 就能跑，所有前端操作都在网页上完成，无需安装任何客户端。除了基础的抓包功能外，还能通过手动或 JS 脚本来修改网络请求。如果觉得 JS 的功能还不够强大，甚至还可以直接使用 shell 指令，比如 *rm -f \** 等, 一条网络请求实现从删库到跑路。另外，还可以方便的添加定时任务，定时执行 JS/Shell/Python 等脚本。
+不管抓包工具是运行在 PC 上还是手机上，还是在路由器、VPS 上，其他的设备都可以通过它提供的端口进行数据传送，所以理论上每个抓包工具都可以对任意平台的流量进行抓包处理。上面提到的抓包工具网络上都有非常详细的教程，今天本文要介绍的是：**[elecV2P](https://github.com/elecV2/elecV2P)**，这款工具可能没有前面所提及的那么优秀，甚至可能还有比较多的缺点，但还是有些可圈可点的地方：这是一款基于 Nodejs 的网络工具，能装 Nodejs 就能跑，同时还提供了 Docker 版本，有 Docker 环境就能运行。所有前端操作都在网页上完成，无需安装任何客户端。除了基础的抓包功能外，还能通过手动或 JS 脚本来修改网络请求。如果觉得 JS 的功能还不够强大，甚至还可以直接使用 shell 指令，比如 *rm -f \** 等, 一条网络请求实现从删库到跑路。另外，还可以方便的添加定时任务，定时执行 JS/Shell/Python 等脚本。
+
+![](https://raw.githubusercontent.com/elecV2/elecV2P-dei/master/docs/res/overview.png)
 
 ## 实操抓包
 
 事前准备：
 - 本文不会详述 网络请求/代理/分流/MITM 等基本原理，如有需求，善用搜索
 - 已正常运行 elecV2P，且三个端口处于可访问状态
-- 一个方便设置分流的代理软件（非必须，使用系统代理或浏览器插件也行。）
+- 一个方便设置分流的代理软件（非必须，使用系统代理或浏览器插件也行）
 
 本文假设 **elecV2P** 运行在本地主机 192.168.1.101 上，三个端口分别为默认的：80/8001/8002。
-- 80   后台管理 webUI 端口。以下简称 webUI 或 webUI 页面。
-- 8001 ANYPROXY 代理端口。
-- 8002 ANYPROXY 代理请求查看端口。
+- 80   后台管理 webUI 端口。以下简称 webUI 或 webUI 页面
+- 8001 ANYPROXY 代理端口
+- 8002 ANYPROXY 代理请求查看端口
 
 *在后面的步骤中，请根据个人的实际情况，进行替换*
 
@@ -36,22 +38,22 @@
   - 手动查找复制
   - 脚本自动保存
 
-### 证书安装
+## 证书安装
 
 elecV2P 启动时会先在项目的 **rootCA** 文件夹下查找根证书，如果没有，则会在主机的 `$HOME/.anyproxy/certificates` 目录下生成一个新的，包含 **rootCA.key/rootCA.crt** 两个文件。如果有，则会自动把 **rootCA** 文件夹下根证书文件拷贝到 `$HOME/.anyproxy/certificates` 目录。
 安装证书可手动进入该目录打开 rootCA.crt 文件进行安装并信任。或者通过默认浏览器打开 http://192.168.1.101/crt 进行下载安装，在 webUI->MITM 的界面也有证书下载的按钮。要抓包哪台设备的流量，就在相应的设备上安装信任证书。（**安装未知来源的根证书有风险，请谨慎操作**）
 
-（可省略步骤：为了避免 `$HOME/.anyproxy/certificates` 目录下的根证书被删除（比如 Docker 升级），elecV2P 又生成一个新的证书，而新证书又需要重新安装和信任，比较麻烦。可以在 elecV2P 第一次启动生成根证书后，把 **rootCA.key/rootCA.crt** 这两个文件复制到项目的 **rootCA** 文件夹下，并进行备份，这样在 elecV2P 下次启动时，会自动应用 **rootCA** 文件夹下的根证书，然后就不用再下载安装和信任新的证书了。）
+（可省略步骤：为了避免 `$HOME/.anyproxy/certificates` 目录下的根证书被删除（比如 Docker 升级），elecV2P 又生成一个新的证书，而新证书又需要重新安装和信任，比较麻烦。可以在 elecV2P 第一次启动生成根证书后，把 **rootCA.key/rootCA.crt** 这两个文件复制到项目的 **rootCA** 文件夹下，并进行备份。）
  
-也可以把其他的自签证书复制到 **rootCA** 文件夹下进行应用。在 webUI->MITM 界面可以很方便的生成一个自签证书（或者通过其他途径生成）。要启用新的根证书，需要重启服务。（记得先清空一下由之前根证书生成的其他域名证书）
+也可以把其他的自签证书复制到 **rootCA** 文件夹下进行应用。在 webUI->MITM 界面可以生成一个自签证书（或者通过其他途径生成）。**启用新的根证书，需要重启服务。**（记得先清空一下由之前根证书生成的其他域名证书）
 
-### 代理设置
+## 代理设置
 
-最简单的就是使用系统代理，无需使用其他软件，设置简单。
+最简单的就是使用系统代理，无需使用其他软件，PC和手机上都能直接设置。
 
 ![](https://elecv2.github.io/src/winproxy.png)
 
-这样设置好后，就可以在 8002 端口页面看到一些网络请求记录了。（基本的 HTTP 请求，在浏览器开发者工具中就能看到所有信息，本文不作讨论。以下网络请求都默认表示 HTTPS 网络请求。）
+设置好后，就可以在 8002 端口页面看到一些网络请求记录了。（基本的 HTTP 请求，在浏览器开发者工具中就能看到所有信息，本文不作讨论。下文提到的网络请求都默认表示 HTTPS 网络请求）
 
 ![](https://elecv2.github.io/src/a800201.png)
 
@@ -68,7 +70,7 @@ elecV2P 启动时会先在项目的 **rootCA** 文件夹下查找根证书，如
 
 使用全局代理的一个缺点就是，所有的网络请求都会通过这个端口，所以短时间内可能会有大量的请求记录，要找到需要的特定网络请求会比较麻烦，于是我们可以设置分流代理，只把特定域名的流量转发到 ANYPROXY 端口进行解密。
 
-系统有自带的分流模式，就是 **PAC 代理**，但不推荐使用，设置稍微有点复杂，网络上可以找到很详细的教程。一般还是推荐使用代理软件来实现分流，如果使用 chrome 浏览器，推荐使用 **SwitchyOmega** 等类似插件来实现分流代理，其他客户端有 clash/小火箭/QuantumultX/Surge 等。
+系统有自带的分流模式，就是 **PAC 代理**，但不推荐使用，设置稍微有点复杂，网络上可以找到很详细的教程。一般还是推荐使用代理软件来实现分流，如果使用 chrome 浏览器，推荐使用插件 **SwitchyOmega** 来实现分流设置，其他客户端有 clash/小火箭/QuantumultX/Surge 等。
 
 首先，在这些软件上添加一个 HTTP 代理：
 - 代理地址: 192.168.1.101
@@ -103,9 +105,7 @@ elecV2P 启动时会先在项目的 **rootCA** 文件夹下查找根证书，如
 
 *$HOLD 后面的修改内容表示胁持 hold 时间，单位：秒。 0 表示持续胁持，直到手动返回*
 
-$HOLD 界面
-
-![](https://elecv2.github.io/src/holdrequest.png)
+![$HOLD 界面](https://elecv2.github.io/src/holdrequest.png)
 
 在这个界面不仅可以查看/复制出任何你需要的信息，还可以对各项参数进行修改，然后返回。
 
@@ -121,7 +121,7 @@ $HOLD 界面
 
 手动复制就不多说了，按前面的查看网络请求，能看到的信息基本就都能复制出来。重点说一下如何使用脚本获取。
 
-首先，脚本哪里来？当然是靠脚本作者无私的分享（有能力也可以自己写），在这里 BB 几句，很多作者免费把脚本分享出来不是为了给自己添麻烦的，稍微抱着点感激之情（非必要条件），彼此尊重，正常交流就好，莫强求。关于 elecV2P 的脚本写法，参考：[说明文档 04-JS.md](https://github.com/elecV2/elecV2P-dei/tree/master/docs/04-JS.md)。
+首先，脚本哪里来？当然是靠脚本作者无私的分享，然后善用 Github 的搜索功能。当然，有能力也可以自己写，关于 elecV2P 的脚本写法，参考: [说明文档 04-JS.md](https://github.com/elecV2/elecV2P-dei/tree/master/docs/04-JS.md)。
 
 下面还是以 NobyDa 的 [JD_DailyBonus.js](https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js) 这个脚本为例，讲一下如何获取京东的 cookie。
 
@@ -131,20 +131,29 @@ $HOLD 界面
 
 然后在 elecV2P webUI 中对照填写，首先是 MITM host: **api.m.jd.com**，直接在 webUI->MITM 添加保存。
 （如果在代理软件中使用了 CFILTER 订阅，这里可以同时填写一下 CFILTER 列表，方便把 **api.m.jd.com** 这个域名代理到 ANYPROXY 端口。）
-然后是 **rewrite**，这里只需要两部分，一个前面的匹配 URL: **https:\\/\\/api\\.m\\.jd\\.com\\/client\\.action.\*functionId=signBean**，一个是后面的 JS: **https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js**, 把这两个填写到 webUI -> REWRITE 的相应部分：
+然后是 **rewrite**，这里只需要两部分，一个前面的匹配 URL: **https:\\/\\/api\\.m\\.jd\\.com\\/client\\.action.\*functionId=signBean**，一个是后面的 JS: **https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js**, 把这两个填写到 webUI->REWRITE 的相应部分：
 
 ![](https://elecv2.github.io/src/rewrite.png)
 
 - *rewrite 规则是 rules url 匹配，在数据返回前通过 JS 修改的简化规则，也可以通过 RULES 添加*
-- *如果原 cookie 的获取方式是 script-request\* 类规则，则必须通过 RULES 添加，并选择网络请求前*
+- *如果原 cookie 的获取方式是 script-**request** 类规则，则必须通过 RULES 添加，并选择网络请求前*
 
-这里有一个注意点，如果 JS 填写的是一个远程链接，要确保这个远程链接是 elecV2P 服务器可访问的。可以在 webUI -> JSMANAGE 中远程推送或者模拟网络请求部分测试一下。像 **https://raw.githubusercontent.com** 这个网址就需要“科学上网”才能访问，所以可能需要在 webUI -> SETTING -> eAxios 相关设置中添加代理。如果不想设置代理，可以选择先把 JS 文件上传到服务器（在 JSMANAGE 界面选择本地上传，或者直接复制所有 JS 代码到编辑框，设置文件名，然后点击保存至服务器即可。）当服务器中存在 JS 文件后，就可以使用本地 JS 的名称来代替原来的远程链接。比如已经上传了 **JD_DailyBonus.js** 这个文件，那么直接把 **https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js** 改为 **JD_DailyBonus.js** 即可，表示使用本地 JS。
+另外，如果 JS 是一个远程链接，要确保这个远程链接是 elecV2P 服务器可访问的。可以在 webUI->JSMANAGE 中远程推送或者模拟网络请求部分测试一下。像 **https://raw.githubusercontent.com** 这个网址就需要“科学上网”才能访问，所以可能需要在 webUI->SETTING->网络相关设置中添加代理。如果不想设置代理，可以选择先把 JS 文件上传到服务器（在 JSMANAGE 界面选择本地上传，或者直接复制所有 JS 代码到编辑框，设置文件名，然后点击保存至服务器。）当服务器中存在 JS 文件后，就可以使用本地 JS 的名称来代替原来的远程链接。比如已经上传了 **JD_DailyBonus.js** 这个文件，那么直接把 **https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js** 改为 **JD_DailyBonus.js** 即可，表示使用本地 JS。
 
-设置完成，接着按照脚本里的提示，打开浏览器登录 https://bean.m.jd.com 。如果前面的设置都没有问题（elecV2P 正常运行，安装信任了根证书，添加了 MITM host，**api.m.jd.com** 正常代理到了 ANYPROXY 端口，正确设置了 REWRITE 规则，JS 文件可下载或已在本地），那么应该会马上收到 cookie 获取成功的提示。类似于：
+假如准备工作都已完成:
+- **elecV2P 正常运行**
+- **安装信任了根证书**
+- **添加了 MITM host**
+- **api.m.jd.com 正常代理到了 ANYPROXY 端口**
+- **正确设置了 REWRITE 或 RULES 规则**
+- **JS 文件可下载或已在本地**
+
+接着就按照脚本里的提示，打开浏览器登录 https://bean.m.jd.com/bean/signIndex.action 。应该会马上收到 cookie 获取成功的提示，类似于：
 
 ![](https://elecv2.github.io/src/jdcookie.png)
 
-如果设置了其他通知方式，也会收到通知提醒。关于通知的设置，参考：[说明文档 07-feed&notify](https://github.com/elecV2/elecV2P-dei/tree/master/docs/07-feed&notify.md) 。如果出现错误，对照 elecV2P 的运行日志，以及上面的所有步骤，重新检查一遍。
+如果出现错误，对照 elecV2P 的运行日志，以及上面的所有步骤，重新检查一遍。
+如果设置了其他通知方式，也会收到通知提醒。关于通知的设置，参考：[说明文档 07-feed&notify](https://github.com/elecV2/elecV2P-dei/tree/master/docs/07-feed&notify.md) 。
 
 ## COOKIE/常量管理
 
@@ -152,7 +161,7 @@ $HOLD 界面
 
 ![](https://elecv2.github.io/src/cookie.png)
 
-如果想要添加一个新的 cookie ，直接修改 KEY 值和对应的 VALUE ，然后点击保存即可。至于这些常量该如何使用，一般不需要知道，直接运行相关脚本，脚本会自动读取。如果是想自己写脚本进行读取的话，参考：[说明文档：04-JS.md](https://github.com/elecV2/elecV2P-dei/tree/master/docs/04-JS.md) 的 **$store** 部分。 
+如果想要添加一个新的 cookie ，直接修改 KEY 值和对应的 VALUE ，然后点击保存即可。至于这些常量该如何使用，一般不需要知道，直接运行相关脚本，脚本会自动读取。如果是想自己写脚本进行读取的话，参考：[说明文档：04-JS](https://github.com/elecV2/elecV2P-dei/tree/master/docs/04-JS.md) **$store** 部分。 
 
 ## 后话
 

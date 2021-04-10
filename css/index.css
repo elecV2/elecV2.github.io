@@ -16,6 +16,7 @@ a {
 img {
   display: flex;
   max-width: 100%;
+  margin: auto;
 }
 
 .header, .main, .footer {
@@ -37,7 +38,7 @@ img {
 }
 
 .main {
-  min-height: 620px;
+  min-height: 80vh;
   margin: 32px 0;
 }
 
