@@ -109,7 +109,7 @@ var eleCBlog = /*#__PURE__*/function () {
       this._atlist.forEach(function (li) {
         var listli = document.createElement("li");
         listli.className = 'articletitle';
-        listli.innerHTML = "<a target=\"_blank\" href=\"./#".concat(encodeURI(li), "\">").concat(li, "</a>");
+        listli.innerHTML = "<a target=\"_blank\" href=\"#".concat(encodeURI(li), "\">").concat(li, "</a>");
         listul.appendChild(listli);
       });
 
