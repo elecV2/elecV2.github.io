@@ -22,3 +22,14 @@ console.log(1 + 1e20 - 1e20)
 console.log(1 +(1e20 - 1e20))
 ```
 
+### 其他
+
+``` JS
+new Promise((a,b)=>{
+  b(1);
+  console.log(2);
+  a(3);
+  console.log(4);
+}).then(console.log).catch(console.log)
+// 输出结果
+```
