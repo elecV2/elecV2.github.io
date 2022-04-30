@@ -5,8 +5,8 @@
     "image": "./src/header.png"
   },
   "footer": {
-    "HOME": "./",
-    "ABOUT": "./#about",
+    "HOME": "",
+    "ABOUT": "#about",
     "TG@elecV2": "https://t.me/elecV2",
     "Power BY eleCBlog": "https://github.com/elecV2/eleCBlog"
   }
