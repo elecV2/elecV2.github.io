@@ -25,9 +25,11 @@ console.log(1 +(1e20 - 1e20))
 ### 其他
 
 ``` JS
+// # 1
 8.toString(2)
 (8).toString(2)
 
+// # 2
 new Promise((a,b)=>{
   b(1);
   console.log(2);
@@ -35,6 +37,10 @@ new Promise((a,b)=>{
   console.log(4);
 }).then(console.log).catch(console.log)
 // 输出结果
+
+// # 3
+for (let i=0;i<3;i++) {}
+for (let i=0;i<3;i+1) {}
 ```
 
 ### 后话
