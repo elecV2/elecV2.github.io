@@ -41,12 +41,47 @@ new Promise((a,b)=>{
 // # 3
 for (let i=0;i<3;i++) {}
 for (let i=0;i<3;i+1) {}
+
+// # 5
+let n = [1]
+if (1 in n) {
+  console.log(true)
+} else {
+  console.log(false)
+}
+console.log(0 in n)
 ```
 
-### 后话
+### 优化建议（maybe
+
+函数传入参数事先进行处理。比如
+
+``` JS
+function etest(a=>typeof a === 'string' ? a : String(a)) {
+  console.log(a, 'typeof :', typeof a)
+}
+
+etest(12389)
+etest('345')
+// typescript ? 否，typescript 只会报错
+// 此种模式下方便统一传入参数类型
+```
+
+### CSS 相关
+
+- 滚动条是否显示的问题
+
+body overflow auto
+子元素 z-index
+
+### 碎碎念 - 一些可能过激的言论
 
 **所谓的规则、逻辑、模式，不是为了限制你，而是为了帮助你。**
 
 所有语言的终点的 JS，所有数据类型的终点是 JSON。
 
 一个不能自动对数据类型进行判断的语言，绝对不能称之为高级语言，或智能语言，甚至可以叫做弱智语言，或垃圾语言。比如：我给你一个帽子或大衣，你需要知道帽子的尺寸，存放时间，甚至颜色和价格等其他数据，才能知道存放到哪里，那么只能说这个衣帽间还停留在初始阶段，毫无智能可言。
+
+用浏览器是为了不安装应用，而网页老是弹出安装的界面。 - 关于 PWA
+
+Service workers 将成为浏览器上最大的毒瘤。  - sw 注入可实现任意网页的 MITM，而用户基本无察觉
