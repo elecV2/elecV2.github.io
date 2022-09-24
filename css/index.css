@@ -36,6 +36,12 @@ img {
   font-size: 32px;
   border: none;
 }
+.header_date {
+  position: absolute;
+  right: 20px;
+  margin-top: 3px;
+  color: var(--main-link);
+}
 
 .main {
   min-height: calc(100vh - 194px);
