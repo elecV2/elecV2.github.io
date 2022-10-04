@@ -50,6 +50,10 @@ if (1 in n) {
   console.log(false)
 }
 console.log(0 in n)
+
+// ?. ??
+const e = {e:2}
+console.log(e?.l??e?.e)
 ```
 
 ### API 相关
